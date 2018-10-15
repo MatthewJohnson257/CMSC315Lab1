@@ -8,14 +8,77 @@ import java.util.Scanner;
 
 class MaxFlow
 {
-  // Driver program to test above functions
+
+  // class variable
+  static int numVertices = 0;    //Number of vertices in graph
+
+
+
   public static void main (String[] args) throws java.lang.Exception
   {
     //Scanner sc = new Scanner(System.in);
     //int number = sc.nextInt();
 
-    // public static int BB = 6;    //Number of vertices in graph
+    MaxFlow m = new MaxFlow();
 
+    processInput();
+
+    // Let us create a graph shown in the above example
+    int graph[][] =new int[][] { {0, 16, 13, 0, 0, 0},
+                                {0, 0, 10, 12, 0, 0},
+                                {0, 4, 0, 0, 14, 0},
+                                {0, 0, 9, 0, 0, 20},
+                                {0, 0, 0, 7, 0, 4},
+                                {0, 0, 0, 0, 0, 0}
+                              };
+
+    System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, 5));
+
+  }
+
+  // reads input and creates a matrix that will represent the graph
+  static int[][] processInput()
+  {
+    Scanner sc = new Scanner(System.in);  // create Scanner
+    int numberOfTeams = sc.nextInt();  // take first line of input
+    int counter = 1;
+    int nFactorial = 1;
+    for(int i = 2; i <= numberOfTeams - 1; i++)
+    {
+      nFactorial = nFactorial * i;
+    }
+    int nMinusTwoFactorial = 1;
+    for(int i = 2; i <= numberOfTeams - 3; i++)
+    {
+      nMinusTwoFactorial = nMinusTwoFactorial * i;
+    }
+
+    // final calculation for number of vertices in the graph
+    numVertices = 2 + (numberOfTeams - 1) + ((nFactorial) / (2 * nMinusTwoFactorial));
+
+    int teamsWins[] = new int[numberOfTeams];
+    for(int i = 0; i < numberOfTeams; i++)
+    {
+      int tmp = sc.nextInt();
+      teamsWins[i] = tmp;
+      System.out.println(teamsWins[i]);
+    }
+
+
+
+
+
+
+    int temp[][] = new int[numVertices][numVertices]; //STUB
+    return temp; //STuB
+  }
+
+
+
+
+
+  /* public static int getInt()
+  {
     Scanner sc = new Scanner(System.in);  // create Scanner
     int numberOfTeams = sc.nextInt();  // take first line of input
     int counter = 1;
@@ -34,41 +97,8 @@ class MaxFlow
     int numberOfNodes = 2 + (numberOfTeams - 1) + ((nFactorial) / (2 * nMinusTwoFactorial));
 
     System.out.println(numberOfNodes);
-
-
-
-
-
-
-    // Let us create a graph shown in the above example
-    int graph[][] =new int[][] { {0, 16, 13, 0, 0, 0},
-                                {0, 0, 10, 12, 0, 0},
-                                {0, 4, 0, 0, 14, 0},
-                                {0, 0, 9, 0, 0, 20},
-                                {0, 0, 0, 7, 0, 4},
-                                {0, 0, 0, 0, 0, 0}
-                              };
-    MaxFlow m = new MaxFlow();
-
-    System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, 5));
-
-  }
-
-  // reads input and creates a matrix that will represent the graph
-  int[][] processInput()
-  {
-    int temp[][] = new int[0][0]; //STUB
-    return temp; //STuB
-  }
-
-
-
-
-
-  static final int V = 6;    //Number of vertices in graph
-
-
-
+    return numberOfNodes;
+  }*/
 
 
 
@@ -100,8 +130,8 @@ class MaxFlow
   {
     // Create a visited array and mark all vertices as not
     // visited
-    boolean visited[] = new boolean[V];
-    for(int i=0; i<V; ++i)
+    boolean visited[] = new boolean[numVertices];
+    for(int i=0; i < numVertices; ++i)
       visited[i]=false;
 
     // Create a queue, enqueue source vertex and mark
@@ -116,7 +146,7 @@ class MaxFlow
     {
       int u = queue.poll();
 
-      for (int v=0; v<V; v++)
+      for (int v=0; v < numVertices; v++)
       {
         if (visited[v]==false && rGraph[u][v] > 0)
         {
@@ -145,14 +175,14 @@ class MaxFlow
     // residual capacity of edge from i to j (if there
     // is an edge. If rGraph[i][j] is 0, then there is
     // not)
-    int rGraph[][] = new int[V][V];
+    int rGraph[][] = new int[numVertices][numVertices];
 
-    for (u = 0; u < V; u++)
-      for (v = 0; v < V; v++)
+    for (u = 0; u < numVertices; u++)
+      for (v = 0; v < numVertices; v++)
         rGraph[u][v] = graph[u][v];
 
     // This array is filled by BFS and to store path
-    int parent[] = new int[V];
+    int parent[] = new int[numVertices];
 
     int max_flow = 0;  // There is no flow initially
 
