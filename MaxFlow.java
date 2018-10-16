@@ -9,8 +9,13 @@ import java.util.Scanner;
 class MaxFlow
 {
 
-  // class variable
+  // class variables
   static int numVertices = 0;    //Number of vertices in graph
+
+  // will be set false if the total number of games team A can possibly win
+  // is less than the current number of wins for another team
+  static boolean winStillPossible = true;
+
 
 
 
@@ -56,15 +61,40 @@ class MaxFlow
     // final calculation for number of vertices in the graph
     numVertices = 2 + (numberOfTeams - 1) + ((nFactorial) / (2 * nMinusTwoFactorial));
 
+    // store the second line of input, the number of wins for each team
     int teamsWins[] = new int[numberOfTeams];
+    int tmp = 0;
     for(int i = 0; i < numberOfTeams; i++)
     {
-      int tmp = sc.nextInt();
+      tmp = sc.nextInt();
       teamsWins[i] = tmp;
       System.out.println(teamsWins[i]);
     }
 
 
+    // make teamsWins[0] into the total number of games that team A can win in total
+    for(int i = 0; i < numberOfTeams; i++)
+    {
+      tmp = sc.nextInt();
+      teamsWins[0] = teamsWins[0] + tmp;
+    }
+
+    System.out.println(teamsWins[0]);
+
+    // changes all other values in teamsWins into the maximum games those teams
+    // can will while still giving team A a chance
+    for(int i = 1; i < numberOfTeams; i++)
+    {
+      if(teamsWins[i] > teamsWins[0])
+      {
+        winStillPossible = false; // in case team A can not win regardless
+      }
+      else
+      {
+        teamsWins[i] = teamsWins[0] - teamsWins[i];
+        System.out.println(teamsWins[i]);
+      }
+    }
 
 
 
