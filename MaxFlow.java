@@ -17,25 +17,11 @@ class MaxFlow
   static boolean winStillPossible = true;
 
 
-
-
   public static void main (String[] args) throws java.lang.Exception
   {
-    //Scanner sc = new Scanner(System.in);
-    //int number = sc.nextInt();
 
     MaxFlow m = new MaxFlow();
 
-    //processInput();
-
-    // Let us create a graph shown in the above example
-    /*int graph[][] =new int[][] { {0, 16, 13, 0, 0, 0},
-                                {0, 0, 10, 12, 0, 0},
-                                {0, 4, 0, 0, 14, 0},
-                                {0, 0, 9, 0, 0, 20},
-                                {0, 0, 0, 7, 0, 4},
-                                {0, 0, 0, 0, 0, 0}
-                              };*/
 
     int graph[][] = processInput();
     int maxFlowRequired = 0;
@@ -156,17 +142,8 @@ class MaxFlow
       }
     }
 
-    /*tempCounter = teamCombinations + 1;
-    tempCounterTwo = 1;
-    for(int i = 1; i <= teamCombinations; i++)
-    {
-      graphRepresentation[tempCounterTwo][tempCounter];
-      tempCounterTwo++;
-    }*/
     System.out.println();
     System.out.println();
-
-    // debug print stuff
 
 
     // directed edges from the third column of vertices to the sink vertex
@@ -186,10 +163,6 @@ class MaxFlow
       }
       System.out.println();
     }
-    //System.out.println(sc.nextInt());
-    //System.out.println(sc.nextInt());
-    //System.out.println(sc.nextInt());
-
 
 
     return graphRepresentation;
