@@ -47,7 +47,7 @@ class MaxFlow
 
     System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, numVertices - 1));
 
-    if(m.fordFulkerson(graph, 0, numVertices - 1) > maxFlowRequired)
+    if(m.fordFulkerson(graph, 0, numVertices - 1) >= maxFlowRequired)
     {
       System.out.println("yes");
     }
