@@ -26,18 +26,35 @@ class MaxFlow
 
     MaxFlow m = new MaxFlow();
 
-    processInput();
+    //processInput();
 
     // Let us create a graph shown in the above example
-    int graph[][] =new int[][] { {0, 16, 13, 0, 0, 0},
+    /*int graph[][] =new int[][] { {0, 16, 13, 0, 0, 0},
                                 {0, 0, 10, 12, 0, 0},
                                 {0, 4, 0, 0, 14, 0},
                                 {0, 0, 9, 0, 0, 20},
                                 {0, 0, 0, 7, 0, 4},
                                 {0, 0, 0, 0, 0, 0}
-                              };
+                              };*/
 
-    System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, 5));
+    int graph[][] = processInput();
+    int maxFlowRequired = 0;
+    for(int i = 0; i < numVertices; i++)
+    {
+      maxFlowRequired = maxFlowRequired + graph[0][i];
+    }
+    System.out.println("maxFlowRequired: " + maxFlowRequired);
+
+    System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, numVertices - 1));
+
+    if(m.fordFulkerson(graph, 0, numVertices - 1) > maxFlowRequired)
+    {
+      System.out.println("yes");
+    }
+    else
+    {
+      System.out.println("no");
+    }
 
   }
 
@@ -128,48 +145,55 @@ class MaxFlow
 
 
     // directed edges from the second column of vertices to the third column
+    tempCounter = 1;
+    for(int i = teamCombinations + 1; i < teamCombinations + numberOfTeams - 1; i++)
+    {
+      for(int j = i + 1; j < teamCombinations + numberOfTeams; j++)
+      {
+        graphRepresentation[tempCounter][i] = graphRepresentation[0][tempCounter];
+        graphRepresentation[tempCounter][j] = graphRepresentation[0][tempCounter];
+        tempCounter++;
+      }
+    }
+
+    /*tempCounter = teamCombinations + 1;
+    tempCounterTwo = 1;
     for(int i = 1; i <= teamCombinations; i++)
     {
+      graphRepresentation[tempCounterTwo][tempCounter];
+      tempCounterTwo++;
+    }*/
+    System.out.println();
+    System.out.println();
+
+    // debug print stuff
+
+
+    // directed edges from the third column of vertices to the sink vertex
+    for(int i = 1; i < numberOfTeams; i++)
+    {
+      graphRepresentation[teamCombinations + i][numVertices - 1] = teamsWins[i];
     }
 
 
-
+    // debug print stuff
+    System.out.println("Contents of graphRepresentation: ");
+    for(int i = 0; i < numVertices; i++)
+    {
+      for(int j = 0; j < numVertices; j++)
+      {
+        System.out.print(graphRepresentation[i][j] + " ");
+      }
+      System.out.println();
+    }
     //System.out.println(sc.nextInt());
     //System.out.println(sc.nextInt());
     //System.out.println(sc.nextInt());
 
 
 
-    return graphRepresentation; //STuB
+    return graphRepresentation;
   }
-
-
-
-
-
-  /* public static int getInt()
-  {
-    Scanner sc = new Scanner(System.in);  // create Scanner
-    int numberOfTeams = sc.nextInt();  // take first line of input
-    int counter = 1;
-    int nFactorial = 1;
-    for(int i = 2; i <= numberOfTeams - 1; i++)
-    {
-      nFactorial = nFactorial * i;
-    }
-    int nMinusTwoFactorial = 1;
-    for(int i = 2; i <= numberOfTeams - 3; i++)
-    {
-      nMinusTwoFactorial = nMinusTwoFactorial * i;
-    }
-
-    // final calculation for number of vertices in the graph
-    int numberOfNodes = 2 + (numberOfTeams - 1) + ((nFactorial) / (2 * nMinusTwoFactorial));
-
-    System.out.println(numberOfNodes);
-    return numberOfNodes;
-  }*/
-
 
 
 
