@@ -58,8 +58,10 @@ class MaxFlow
       nMinusTwoFactorial = nMinusTwoFactorial * i;
     }
 
+    int teamCombinations = (nFactorial) / (2 * nMinusTwoFactorial);
+
     // final calculation for number of vertices in the graph
-    numVertices = 2 + (numberOfTeams - 1) + ((nFactorial) / (2 * nMinusTwoFactorial));
+    numVertices = 2 + (numberOfTeams - 1) + teamCombinations;
 
     // store the second line of input, the number of wins for each team
     int teamsWins[] = new int[numberOfTeams];
@@ -96,11 +98,49 @@ class MaxFlow
       }
     }
 
+    System.out.println();
+
+    // matrix representation of the graph
+    int graphRepresentation[][] = new int[numVertices][numVertices]; //STUB
+    int tempCounter = 1;
+
+    // directed edges from the source to the second column of vertices
+    for(int i = 1; i < numberOfTeams; i++)
+    {
+      for(int j = numberOfTeams - i; j <= numberOfTeams; j++)
+      {
+        sc.nextInt();
+      }
+      for(int k = i + 1; k < numberOfTeams; k++)
+      {
+        graphRepresentation[0][tempCounter] = sc.nextInt();
+        tempCounter++;
+        //System.out.print(sc.nextInt() + " ");
+      }
+    }
+
+    // debug print stuff
+    System.out.println();
+    for(int i = 0; i < numVertices; i++)
+    {
+      System.out.print(graphRepresentation[0][i] + " ");
+    }
+
+
+    // directed edges from the second column of vertices to the third column
+    for(int i = 1; i <= teamCombinations; i++)
+    {
+    }
 
 
 
-    int temp[][] = new int[numVertices][numVertices]; //STUB
-    return temp; //STuB
+    //System.out.println(sc.nextInt());
+    //System.out.println(sc.nextInt());
+    //System.out.println(sc.nextInt());
+
+
+
+    return graphRepresentation; //STuB
   }
 
 
