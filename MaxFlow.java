@@ -16,6 +16,9 @@ class MaxFlow
   // is less than the current number of wins for another team
   static boolean winStillPossible = true;
 
+  // if true, the program will print debug statements
+  static boolean debug = false;
+
 
   public static void main (String[] args) throws java.lang.Exception
   {
@@ -29,10 +32,13 @@ class MaxFlow
     {
       maxFlowRequired = maxFlowRequired + graph[0][i];
     }
-    System.out.println("maxFlowRequired: " + maxFlowRequired);
 
-    System.out.println("numVertices: " + numVertices);
-    System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, numVertices - 1));
+    if(debug)
+    {
+      System.out.println("maxFlowRequired: " + maxFlowRequired);
+      System.out.println("numVertices: " + numVertices);
+      System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, numVertices - 1));
+    }
 
     if(m.fordFulkerson(graph, 0, numVertices - 1) >= maxFlowRequired)
     {
@@ -74,7 +80,6 @@ class MaxFlow
     {
       tmp = sc.nextInt();
       teamsWins[i] = tmp;
-      System.out.println(teamsWins[i]);
     }
 
 
@@ -84,8 +89,6 @@ class MaxFlow
       tmp = sc.nextInt();
       teamsWins[0] = teamsWins[0] + tmp;
     }
-
-    System.out.println(teamsWins[0]);
 
     // changes all other values in teamsWins into the maximum games those teams
     // can will while still giving team A a chance
@@ -98,11 +101,8 @@ class MaxFlow
       else
       {
         teamsWins[i] = teamsWins[0] - teamsWins[i];
-        System.out.println(teamsWins[i]);
       }
     }
-
-    System.out.println();
 
     // matrix representation of the graph
     int graphRepresentation[][] = new int[numVertices][numVertices]; //STUB
@@ -123,14 +123,6 @@ class MaxFlow
       }
     }
 
-    // debug print stuff
-    System.out.println();
-    for(int i = 0; i < numVertices; i++)
-    {
-      System.out.print(graphRepresentation[0][i] + " ");
-    }
-
-
     // directed edges from the second column of vertices to the third column
     tempCounter = 1;
     for(int i = teamCombinations + 1; i < teamCombinations + numberOfTeams - 1; i++)
@@ -143,9 +135,6 @@ class MaxFlow
       }
     }
 
-    System.out.println();
-    System.out.println();
-
 
     // directed edges from the third column of vertices to the sink vertex
     for(int i = 1; i < numberOfTeams; i++)
@@ -154,13 +143,18 @@ class MaxFlow
     }
 
 
-    // debug print stuff
-    System.out.println("Contents of graphRepresentation: ");
-    for(int i = 0; i < numVertices; i++)
+
+    // debug print statements
+    if(debug)
     {
-      for(int j = 0; j < numVertices; j++)
+      System.out.println("Contents of graphRepresentation: ");
+      for(int i = 0; i < numVertices; i++)
       {
-        System.out.print(graphRepresentation[i][j] + " ");
+        for(int j = 0; j < numVertices; j++)
+        {
+          System.out.print(graphRepresentation[i][j] + " ");
+        }
+        System.out.println();
       }
       System.out.println();
     }
@@ -173,8 +167,7 @@ class MaxFlow
 
 
 
-
-  // BELOW IS STUFF THAT COMES FROM
+  // The below code was found at:
   // https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
   // *****************************************************************************
 
