@@ -1,3 +1,7 @@
+// Basel Arafat and Matthew Johnson
+// CMSC 315 Algorithms, Lab 1 - Max Flow Applications
+// Source for the Implementation of the Ford-Fulkerson Max Flow:
+// https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
 
 // Java program for implementation of Ford Fulkerson algorithm
 import java.util.*;
@@ -8,12 +12,12 @@ import java.util.Scanner;
 
 class MaxFlow
 {
-
-  // class variables
-  static int numVertices = 0;    //Number of vertices in graph
+  // number of vertices in graph
+  static int numVertices = 0;
 
   // will be set false if the total number of games team A can possibly win
-  // is less than the current number of wins for another team
+  // is less than the current number of wins for another team at this point
+  // in the season
   static boolean winStillPossible = true;
 
   // if true, the program will print debug statements
@@ -23,31 +27,53 @@ class MaxFlow
   public static void main (String[] args) throws java.lang.Exception
   {
 
+
     MaxFlow m = new MaxFlow();
 
-
+    // retrieve a graph representation of the max flow problem, given the input
+    // from standard input.  The graph is implemented using a two dimensional
+    // array, where each row represents a starting vertex of an edge, each column
+    // represents an ending vertex of an edge, and each value in the array
+    // represents the weight of that edge
     int graph[][] = processInput();
+
+    // the max flow that is necessary, given the graph representation, such that
+    // team A still has a chance to win/tie overall
     int maxFlowRequired = 0;
     for(int i = 0; i < numVertices; i++)
     {
       maxFlowRequired = maxFlowRequired + graph[0][i];
     }
 
+    // debug print statements
     if(debug)
     {
       System.out.println("maxFlowRequired: " + maxFlowRequired);
       System.out.println("numVertices: " + numVertices);
       System.out.println("The maximum possible flow is " + m.fordFulkerson(graph, 0, numVertices - 1));
+      System.out.println("winStillPossible: " + winStillPossible);
     }
 
-    if(m.fordFulkerson(graph, 0, numVertices - 1) >= maxFlowRequired)
+    if(winStillPossible)
     {
-      System.out.println("yes");
-    }
-    else
+      // run max flow on the graph
+      if(m.fordFulkerson(graph, 0, numVertices - 1) >= maxFlowRequired)
+      {
+        // team A has a chance to win/tie overall
+        System.out.println("yes");
+      }
+      else
+      {
+        // team A does not have a chance to win/tie overall
+        System.out.println("no");
+      }
+    } else
     {
+      // some team other than team A has more wins currently that team A can
+      // accumulate the rest of the season
       System.out.println("no");
     }
+
 
   }
 
@@ -56,8 +82,13 @@ class MaxFlow
   {
     Scanner sc = new Scanner(System.in);  // create Scanner
     int numberOfTeams = sc.nextInt();  // take first line of input
+
+
     int counter = 1;
     int nFactorial = 1;
+
+    // calculate factorials which are later used in calculation the combinations
+    // of games played by the teams other than A. (Ex. BC, BD, BE, CD, CE, DE)
     for(int i = 2; i <= numberOfTeams - 1; i++)
     {
       nFactorial = nFactorial * i;
@@ -68,6 +99,8 @@ class MaxFlow
       nMinusTwoFactorial = nMinusTwoFactorial * i;
     }
 
+    // using the calculation of combinations, find the number of team game
+    // combinations of the games that don't involve team A
     int teamCombinations = (nFactorial) / (2 * nMinusTwoFactorial);
 
     // final calculation for number of vertices in the graph
@@ -84,6 +117,7 @@ class MaxFlow
 
 
     // make teamsWins[0] into the total number of games that team A can win in total
+    // assuming it wins all its remaining games
     for(int i = 0; i < numberOfTeams; i++)
     {
       tmp = sc.nextInt();
@@ -91,12 +125,14 @@ class MaxFlow
     }
 
     // changes all other values in teamsWins into the maximum games those teams
-    // can will while still giving team A a chance
+    // can will while still giving team A a chance to tie/win the season
     for(int i = 1; i < numberOfTeams; i++)
     {
       if(teamsWins[i] > teamsWins[0])
       {
         winStillPossible = false; // in case team A can not win regardless
+        // this occurs if the total possible wins team A can get is less than
+        // the number of wins of any team at this point in the season
       }
       else
       {
@@ -105,7 +141,8 @@ class MaxFlow
     }
 
     // matrix representation of the graph
-    int graphRepresentation[][] = new int[numVertices][numVertices]; //STUB
+    int graphRepresentation[][] = new int[numVertices][numVertices];
+
     int tempCounter = 1;
 
     // directed edges from the source to the second column of vertices
@@ -119,9 +156,9 @@ class MaxFlow
       {
         graphRepresentation[0][tempCounter] = sc.nextInt();
         tempCounter++;
-        //System.out.print(sc.nextInt() + " ");
       }
     }
+
 
     // directed edges from the second column of vertices to the third column
     tempCounter = 1;
@@ -141,7 +178,6 @@ class MaxFlow
     {
       graphRepresentation[teamCombinations + i][numVertices - 1] = teamsWins[i];
     }
-
 
 
     // debug print statements
@@ -167,16 +203,11 @@ class MaxFlow
 
 
 
+
+  // ***************************************************************************
   // The below code was found at:
   // https://www.geeksforgeeks.org/ford-fulkerson-algorithm-for-maximum-flow-problem/
-  // *****************************************************************************
-
-
-
-
-
-
-
+  // ***************************************************************************
 
 
 
